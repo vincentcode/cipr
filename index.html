@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus — AI-Powered Workflow & Compliance Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --sand:#fdf6ee;--sand2:#f7ede0;--sand3:#f0e2cc;--cream:#fffcf7;
+  --brown:#2a1d12;--brown2:#4a3423;--brown3:#7a5c42;
+  --orange:#e87d3e;--orange2:#f09060;--orange-dim:rgba(232,125,62,0.12);
+  --green:#3d8b5e;--green-dim:rgba(61,139,94,0.1);
+  --text:#2a1d12;--muted:#7a5c42;--dim:#b09070;
+  --border:#e8d8c4;--border2:#d4c0a8;
+  --sans:'Plus Jakarta Sans',sans-serif;--display:'Fraunces',serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--text);font-family:var(--sans);overflow-x:hidden;line-height:1.6;}
+::selection{background:rgba(232,125,62,0.2);}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--orange);border-radius:2px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes floatIn{from{opacity:0;transform:scale(.97);}to{opacity:1;transform:scale(1);}}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+@keyframes flowDot{0%{opacity:0;transform:translateY(-8px);}50%{opacity:1;}100%{opacity:0;transform:translateY(8px);}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 56px;background:rgba(255,252,247,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:box-shadow .3s;}
+nav.scrolled{box-shadow:0 2px 20px rgba(42,29,18,.07);}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
+.logo-mark{width:30px;height:30px;background:var(--orange);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:15px;font-weight:600;color:#fff;font-style:italic;flex-shrink:0;}
+.logo-text{font-family:var(--display);font-size:17px;font-weight:600;color:var(--brown);letter-spacing:-.02em;}
+.nav-links{display:flex;gap:34px;align-items:center;}
+.nav-link{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s;}
+.nav-link:hover{color:var(--brown);}
+.btn-primary{display:inline-flex;align-items:center;gap:7px;padding:10px 24px;background:var(--orange);color:#fff;border:none;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap;}
+.btn-primary:hover{background:var(--orange2);transform:translateY(-1px);box-shadow:0 6px 22px rgba(232,125,62,.32);}
+.btn-ghost{display:inline-flex;align-items:center;gap:7px;padding:10px 24px;background:transparent;color:var(--brown);border:1.5px solid var(--border2);border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange);}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;align-items:center;padding-top:64px;background:var(--cream);position:relative;overflow:hidden;}
+.hero-blob{position:absolute;top:-80px;right:-80px;width:560px;height:560px;background:radial-gradient(circle,rgba(232,125,62,.1) 0%,transparent 68%);pointer-events:none;}
+.hero-blob2{position:absolute;bottom:-100px;left:-60px;width:440px;height:440px;background:radial-gradient(circle,rgba(61,139,94,.07) 0%,transparent 68%);pointer-events:none;}
+.hero-inner{max-width:1100px;margin:0 auto;padding:80px 56px;width:100%;position:relative;display:grid;grid-template-columns:1.1fr 0.9fr;gap:72px;align-items:center;}
+.hero-kicker{display:flex;flex-direction:column;gap:6px;margin-bottom:24px;animation:fadeUp .5s ease .1s both;}
+.hero-kicker-top{font-size:11px;font-weight:600;color:var(--orange);letter-spacing:.14em;text-transform:uppercase;}
+.hero-kicker-pillars{display:flex;align-items:center;gap:10px;}
+.hero-kicker-pillars span{font-family:var(--display);font-size:18px;font-weight:600;color:var(--brown);letter-spacing:-.01em;}
+.hero-kicker-pillars .dot{width:4px;height:4px;background:var(--orange);border-radius:50%;flex-shrink:0;opacity:.6;}
+.hero-left h1{font-family:var(--display);font-size:clamp(36px,4.8vw,62px);font-weight:400;line-height:1.08;color:var(--brown);margin-bottom:22px;animation:fadeUp .55s ease .2s both;letter-spacing:-.015em;}
+.hero-left h1 em{font-style:italic;color:var(--orange);}
+.hero-left p{font-size:16px;color:var(--muted);line-height:1.78;max-width:480px;margin-bottom:36px;font-weight:300;animation:fadeUp .55s ease .3s both;}
+.hero-btns{display:flex;gap:12px;margin-bottom:40px;animation:fadeUp .55s ease .4s both;flex-wrap:wrap;}
+.trust-bar{display:flex;align-items:center;gap:4px;animation:fadeUp .55s ease .5s both;}
+.avatars{display:flex;}
+.avatar{width:28px;height:28px;border-radius:50%;border:2px solid var(--cream);margin-right:-8px;flex-shrink:0;}
+.trust-text{font-size:12px;color:var(--muted);margin-left:14px;}
+.trust-text strong{color:var(--brown);font-weight:600;}
+
+/* Hero card */
+.hero-card{background:var(--cream);border:1.5px solid var(--border);border-radius:22px;padding:28px;box-shadow:0 10px 48px rgba(42,29,18,.09);animation:floatIn .65s ease .35s both;}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.card-title{font-size:13px;font-weight:600;color:var(--brown);}
+.card-live{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--green-dim);border-radius:100px;font-size:10px;font-weight:600;color:var(--green);}
+.live-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+.wsteps{display:flex;flex-direction:column;gap:9px;margin-bottom:18px;}
+.wstep{display:flex;align-items:center;gap:12px;padding:11px 13px;background:var(--sand);border-radius:12px;transition:background .2s;}
+.wstep:hover{background:var(--sand2);}
+.wstep-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.wstep-body{flex:1;min-width:0;}
+.wstep-label{font-size:12px;font-weight:600;color:var(--brown);margin-bottom:1px;}
+.wstep-sub{font-size:10px;color:var(--muted);}
+.ws-badge{font-size:10px;font-weight:600;padding:3px 9px;border-radius:100px;flex-shrink:0;}
+.ws-done{background:var(--green-dim);color:var(--green);}
+.ws-review{background:var(--orange-dim);color:var(--orange);}
+.ws-queue{background:rgba(42,29,18,.06);color:var(--dim);}
+.card-footer{border-top:1px solid var(--border);padding-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.cf-item{text-align:center;}
+.cf-val{font-family:var(--display);font-size:19px;font-weight:600;color:var(--orange);}
+.cf-label{font-size:9px;color:var(--muted);margin-top:1px;line-height:1.3;}
+.input-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;}
+.chip{padding:5px 11px;background:var(--sand2);border:1px solid var(--border);border-radius:100px;font-size:11px;color:var(--muted);}
+
+/* ── SHARED ── */
+.section-inner{max-width:1100px;margin:0 auto;padding:0 56px;}
+.kicker{font-size:11px;font-weight:600;color:var(--orange);letter-spacing:.12em;text-transform:uppercase;}
+.section-h{font-family:var(--display);font-size:clamp(28px,3.5vw,46px);font-weight:400;color:var(--brown);line-height:1.14;margin-top:12px;letter-spacing:-.01em;}
+.section-h em{font-style:italic;color:var(--orange);}
+.section-sub{font-size:15px;color:var(--muted);font-weight:300;line-height:1.7;margin-top:12px;max-width:620px;}
+
+/* ── CAPABILITIES ── */
+#capabilities{padding:112px 0;background:var(--sand);}
+.cap-head{text-align:center;margin-bottom:60px;}
+.cap-head .section-sub{margin:12px auto 0;}
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.cap-card{background:var(--cream);border:1.5px solid var(--border);border-radius:18px;padding:30px;transition:all .25s;}
+.cap-card:hover{border-color:var(--orange);box-shadow:0 8px 32px rgba(232,125,62,.1);transform:translateY(-3px);}
+.cap-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px;}
+.cap-h{font-family:var(--display);font-size:19px;font-weight:400;color:var(--brown);margin-bottom:10px;line-height:1.2;}
+.cap-p{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+
+/* ── ABOUT ── */
+#about{padding:112px 0;background:var(--cream);}
+.about-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:64px;align-items:center;}
+.about-text h2{margin:12px 0 20px;}
+.about-text p{font-size:14px;color:var(--muted);line-height:1.78;font-weight:300;margin-bottom:14px;}
+.pullquote{background:var(--cream);border:1.5px solid var(--border);border-left:4px solid var(--orange);border-radius:0 12px 12px 0;padding:16px 20px;margin:24px 0;font-family:var(--display);font-style:italic;font-size:15px;color:var(--brown2);line-height:1.55;}
+.stats-mosaic{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;}
+.stat-tile{border-radius:18px;padding:24px 20px;text-align:center;transition:transform .2s;}
+.stat-tile:hover{transform:scale(1.03);}
+.stat-tile:nth-child(1){background:var(--orange);color:#fff;}
+.stat-tile:nth-child(2){background:var(--brown);color:#fff;}
+.stat-tile:nth-child(3){background:var(--cream);border:1.5px solid var(--border);}
+.stat-tile:nth-child(4){background:var(--green-dim);border:1.5px solid rgba(61,139,94,.2);}
+.stat-tile:nth-child(5){background:var(--sand2);border:1.5px solid var(--border2);}
+.stat-tile:nth-child(6){background:var(--brown);color:#fff;}
+.stat-big{font-family:var(--display);font-size:28px;font-weight:600;margin-bottom:5px;line-height:1.15;}
+.stat-tile:nth-child(1) .stat-big,.stat-tile:nth-child(2) .stat-big,.stat-tile:nth-child(6) .stat-big{color:#fff;}
+.stat-tile:nth-child(3) .stat-big{color:var(--brown);}
+.stat-tile:nth-child(4) .stat-big{color:var(--green);}
+.stat-tile:nth-child(5) .stat-big{color:var(--orange);}
+.stat-label{font-size:11px;line-height:1.4;}
+.stat-tile:nth-child(1) .stat-label,.stat-tile:nth-child(2) .stat-label,.stat-tile:nth-child(6) .stat-label{color:rgba(255,255,255,.65);}
+.stat-tile:nth-child(3) .stat-label{color:var(--muted);}
+.stat-tile:nth-child(4) .stat-label{color:var(--green);}
+.stat-tile:nth-child(5) .stat-label{color:var(--brown2);}
+.stat-icon{font-size:22px;margin-bottom:8px;}
+.stat-sub{font-size:10px;line-height:1.5;margin-top:5px;}
+.stat-tile:nth-child(1) .stat-sub,.stat-tile:nth-child(2) .stat-sub,.stat-tile:nth-child(6) .stat-sub{color:rgba(255,255,255,.5);}
+.stat-tile:nth-child(3) .stat-sub{color:var(--dim);}
+.stat-tile:nth-child(4) .stat-sub{color:rgba(61,139,94,.7);}
+.stat-tile:nth-child(5) .stat-sub{color:var(--muted);}
+
+/* ── SOLUTIONS ── */
+#solutions{padding:112px 0;background:var(--sand2);}
+.sol-head{text-align:center;margin-bottom:60px;}
+.sol-head .section-sub{margin:12px auto 0;}
+.sol-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.sol-card{border-radius:20px;padding:36px;transition:all .25s;}
+.sol-card.light{background:var(--cream);border:1.5px solid var(--border);}
+.sol-card.light:hover{border-color:var(--orange);box-shadow:0 8px 32px rgba(232,125,62,.1);transform:translateY(-2px);}
+.sol-card.dark{background:var(--brown);border:1.5px solid var(--brown);}
+.sol-card.dark:hover{border-color:var(--orange2);transform:translateY(-2px);}
+.sol-area{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+.sol-card.light .sol-area{color:var(--orange);}
+.sol-card.dark .sol-area{color:rgba(232,125,62,.7);}
+.sol-h{font-family:var(--display);font-size:24px;font-weight:400;line-height:1.15;margin-bottom:14px;letter-spacing:-.01em;}
+.sol-card.light .sol-h{color:var(--brown);}
+.sol-card.dark .sol-h{color:#fff;}
+.sol-p{font-size:13px;line-height:1.72;margin-bottom:22px;font-weight:300;}
+.sol-card.light .sol-p{color:var(--muted);}
+.sol-card.dark .sol-p{color:rgba(255,255,255,.5);}
+.sol-points{display:flex;flex-direction:column;gap:9px;}
+.sol-point{display:flex;align-items:flex-start;gap:9px;font-size:12px;}
+.sol-card.light .sol-point{color:var(--muted);}
+.sol-card.dark .sol-point{color:rgba(255,255,255,.5);}
+.sol-check{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;margin-top:1px;}
+.sol-card.light .sol-check{background:var(--orange-dim);border:1px solid rgba(232,125,62,.25);color:var(--orange);}
+.sol-card.dark .sol-check{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);}
+
+/* ── APPROACH ── */
+#approach{padding:112px 0;background:var(--cream);}
+.approach-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:60px;}
+.step-list{display:flex;flex-direction:column;}
+.step-item{display:flex;gap:18px;}
+.step-num-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.step-bubble{width:38px;height:38px;border-radius:50%;background:var(--orange-dim);border:1.5px solid rgba(232,125,62,.28);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--orange);}
+.step-line{width:1.5px;flex:1;background:linear-gradient(var(--border2),transparent);margin-top:6px;min-height:28px;}
+.step-body{padding:4px 0 28px;}
+.step-body h4{font-size:15px;font-weight:600;color:var(--brown);margin-bottom:5px;}
+.step-body p{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;}
+.approach-card{background:var(--sand);border:1.5px solid var(--border);border-radius:20px;padding:32px;position:sticky;top:90px;}
+.approach-card .kicker{margin-bottom:18px;display:block;}
+.principle{padding:15px;background:var(--cream);border-radius:12px;margin-bottom:10px;transition:all .2s;}
+.principle:last-child{margin-bottom:0;}
+.principle:hover{background:#fff;box-shadow:0 2px 12px rgba(42,29,18,.06);}
+.pi-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.pi-icon{width:24px;height:24px;border-radius:6px;background:var(--orange-dim);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.pi-title{font-size:13px;font-weight:600;color:var(--brown);}
+.principle p{font-size:11px;color:var(--muted);line-height:1.6;padding-left:32px;}
+
+/* ── INDUSTRIES ── */
+#industries{padding:112px 0;background:var(--sand);}
+.ind-head{text-align:center;margin-bottom:56px;}
+.ind-head .section-sub{margin:12px auto 0;}
+.ind-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.ind-card{background:var(--cream);border:1.5px solid var(--border);border-radius:18px;padding:30px;transition:all .25s;}
+.ind-card:hover{border-color:var(--orange);box-shadow:0 8px 28px rgba(232,125,62,.1);transform:translateY(-3px);}
+.ind-icon{font-size:28px;margin-bottom:16px;}
+.ind-h{font-family:var(--display);font-size:20px;font-weight:400;color:var(--brown);margin-bottom:10px;line-height:1.2;}
+.ind-p{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+
+/* ── CONTACT ── */
+#contact{padding:112px 0;background:var(--sand2);position:relative;overflow:hidden;}
+.contact-blob{position:absolute;top:-80px;right:-80px;width:440px;height:440px;background:radial-gradient(circle,rgba(232,125,62,.1) 0%,transparent 70%);pointer-events:none;}
+.contact-inner{max-width:680px;margin:0 auto;padding:0 56px;position:relative;}
+.contact-head{text-align:center;margin-bottom:48px;}
+.contact-head h2{margin:14px 0 14px;}
+.contact-head p{font-size:14px;color:var(--muted);font-weight:300;line-height:1.68;}
+.form-card{background:var(--cream);border:1.5px solid var(--border);border-radius:22px;padding:40px;box-shadow:0 10px 48px rgba(42,29,18,.08);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.form-group{margin-bottom:14px;}
+label{font-size:11px;font-weight:600;color:var(--brown2);display:block;margin-bottom:6px;letter-spacing:.02em;}
+input,textarea{width:100%;background:var(--sand);border:1.5px solid var(--border);border-radius:11px;padding:11px 15px;color:var(--brown);font-size:13px;outline:none;font-family:var(--sans);transition:border-color .2s,background .2s;}
+input::placeholder,textarea::placeholder{color:var(--dim);}
+input:focus,textarea:focus{border-color:var(--orange);background:#fff;}
+textarea{resize:vertical;}
+.submit-btn{width:100%;padding:14px;justify-content:center;font-size:14px;border-radius:12px;margin-top:4px;letter-spacing:.01em;}
+#success{display:none;text-align:center;padding:60px 40px;background:var(--sand);border:1.5px solid var(--border);border-radius:22px;}
+#success .check-icon{font-size:36px;margin-bottom:14px;}
+#success h3{font-family:var(--display);font-size:24px;font-weight:400;color:var(--brown);margin-bottom:8px;}
+#success p{font-size:13px;color:var(--muted);}
+
+/* ── FOOTER ── */
+footer{background:var(--brown);padding:40px 56px;}
+.footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:32px;}
+.footer-brand{}
+.footer-logo-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.footer-logo-mark{width:26px;height:26px;background:var(--orange);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px;color:#fff;font-style:italic;font-weight:600;}
+.footer-logo-text{font-family:var(--display);font-size:15px;font-weight:600;color:rgba(255,255,255,.5);}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.3);line-height:1.5;max-width:260px;}
+.footer-links{display:flex;gap:24px;justify-content:center;}
+.footer-links a{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:rgba(255,255,255,.75);}
+.footer-legal{text-align:right;}
+.footer-legal p{font-size:11px;color:rgba(255,255,255,.2);}
+.footer-legal .legal-links{display:flex;gap:16px;justify-content:flex-end;margin-top:6px;}
+.footer-legal .legal-links span{font-size:11px;color:rgba(255,255,255,.2);cursor:pointer;transition:color .2s;}
+.footer-legal .legal-links span:hover{color:rgba(255,255,255,.5);}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <div class="logo-mark">N</div>
+    <span class="logo-text">Nexus</span>
+  </a>
+  <div class="nav-links">
+    <a href="#about" class="nav-link">About</a>
+    <a href="#solutions" class="nav-link">Solutions</a>
+    <a href="#approach" class="nav-link">Approach</a>
+    <a href="#industries" class="nav-link">Industries</a>
+    <a href="#contact" class="nav-link">Contact</a>
+    <a href="#contact" class="btn-primary">Request Demo</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-blob"></div>
+  <div class="hero-blob2"></div>
+  <div class="hero-inner">
+
+    <div class="hero-left">
+      <div class="hero-kicker">
+        <div class="hero-kicker-top">Platform for</div>
+        <div class="hero-kicker-pillars">
+          <span>Permitting</span>
+          <div class="dot"></div>
+          <span>Compliance</span>
+          <div class="dot"></div>
+          <span>Reporting</span>
+        </div>
+      </div>
+      <h1>Permitting, Compliance &amp; Reporting — <em>powered by AI intelligence.</em></h1>
+      <p>We help enterprises and regulatory organisations convert hard-copy forms, PDFs, and Word-based reporting processes into AI-powered electronic workflows — with intelligent extraction, human validation, and cross-document analysis built in.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary">Request a Demo →</a>
+        <a href="#solutions" class="btn-ghost">Explore Solutions</a>
+      </div>
+      <div class="trust-bar">
+        <div class="avatars">
+          <div class="avatar" style="background:#d4a86a;"></div>
+          <div class="avatar" style="background:#a8c4a0;"></div>
+          <div class="avatar" style="background:#8baed4;"></div>
+          <div class="avatar" style="background:#c4a0b4;"></div>
+        </div>
+        <span class="trust-text"><strong>Human-in-the-loop</strong> oversight, by design</span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="card-head">
+          <span class="card-title">Live Workflow Queue</span>
+          <div class="card-live"><div class="live-dot"></div>Active</div>
+        </div>
+        <div class="wsteps">
+          <div class="wstep">
+            <div class="wstep-icon" style="background:rgba(61,139,94,.1);">📄</div>
+            <div class="wstep-body">
+              <div class="wstep-label">Annual Report — TeleCo Ltd</div>
+              <div class="wstep-sub">847 obligations extracted</div>
+            </div>
+            <span class="ws-badge ws-done">Done</span>
+          </div>
+          <div class="wstep">
+            <div class="wstep-icon" style="background:rgba(232,125,62,.1);">⚠️</div>
+            <div class="wstep-body">
+              <div class="wstep-label">Compliance Filing — FinGroup</div>
+              <div class="wstep-sub">3 cross-doc conflicts flagged</div>
+            </div>
+            <span class="ws-badge ws-review">Review</span>
+          </div>
+          <div class="wstep">
+            <div class="wstep-icon" style="background:rgba(42,29,18,.05);">🕐</div>
+            <div class="wstep-body">
+              <div class="wstep-label">Permit Application — BuildCorp</div>
+              <div class="wstep-sub">Queued · 12 min estimated</div>
+            </div>
+            <span class="ws-badge ws-queue">Queued</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="cf-item"><div class="cf-val">99.2%</div><div class="cf-label">Accuracy</div></div>
+          <div class="cf-item"><div class="cf-val">&lt;4s</div><div class="cf-label">Avg. time</div></div>
+          <div class="cf-item"><div class="cf-val">100%</div><div class="cf-label">Auditable</div></div>
+        </div>
+      </div>
+      <div class="input-chips">
+        <span class="chip">📋 Paper Forms</span>
+        <span class="chip">📑 PDFs</span>
+        <span class="chip">📝 Word Docs</span>
+        <span class="chip">🌐 Online Submissions</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CAPABILITIES ── -->
+<section id="capabilities">
+  <div class="section-inner">
+    <div class="cap-head reveal">
+      <div class="kicker">Platform Capabilities</div>
+      <h2 class="section-h">Enterprise Workflow Intelligence</h2>
+      <p class="section-sub">Modernise document-heavy operations using AI-powered workflow transformation and intelligent enterprise automation.</p>
+    </div>
+    <div class="cap-grid">
+      <div class="cap-card reveal" style="transition-delay:.05s;">
+        <div class="cap-icon" style="background:rgba(232,125,62,.1);">🤖</div>
+        <h3 class="cap-h">AI Document Processing</h3>
+        <p class="cap-p">Extract structured information from paper forms, scanned documents, PDFs, and Word files with high confidence scoring and validation.</p>
+      </div>
+      <div class="cap-card reveal" style="transition-delay:.1s;">
+        <div class="cap-icon" style="background:rgba(61,139,94,.1);">⚡</div>
+        <h3 class="cap-h">Workflow Automation</h3>
+        <p class="cap-p">Convert manual document operations into intelligent digital workflows with approval pipelines, routing, and escalation management.</p>
+      </div>
+      <div class="cap-card reveal" style="transition-delay:.15s;">
+        <div class="cap-icon" style="background:rgba(42,29,18,.06);">⚖️</div>
+        <h3 class="cap-h">Regulatory Intelligence</h3>
+        <p class="cap-p">Automate obligation extraction, tracking, compliance workflows, and submission management for regulatory bodies.</p>
+      </div>
+      <div class="cap-card reveal" style="transition-delay:.2s;">
+        <div class="cap-icon" style="background:rgba(232,125,62,.1);">🤝</div>
+        <h3 class="cap-h">Human Validation</h3>
+        <p class="cap-p">Combine AI automation with configurable human review workflows — keeping your team in authority over every critical decision.</p>
+      </div>
+      <div class="cap-card reveal" style="transition-delay:.25s;">
+        <div class="cap-icon" style="background:rgba(61,139,94,.1);">🔗</div>
+        <h3 class="cap-h">Cross-Document Analysis</h3>
+        <p class="cap-p">Identify relationships, dependencies, and conflicts across multiple reports and submissions in real time.</p>
+      </div>
+      <div class="cap-card reveal" style="transition-delay:.3s;">
+        <div class="cap-icon" style="background:rgba(42,29,18,.06);">🖥️</div>
+        <h3 class="cap-h">Digital Reporting Portal</h3>
+        <p class="cap-p">Enable fully online reporting workflows while supporting legacy paper-based operations during transition periods.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="kicker">About Us</div>
+        <h2 class="section-h">Transforming document-centric operations into <em>intelligent digital systems</em></h2>
+        <p>We build AI-powered enterprise solutions that modernise document-intensive and compliance-driven operations — helping organisations move from fragmented manual processes to structured, auditable digital workflows.</p>
+        <div class="pullquote">"By combining intelligent processing, workflow automation, and human-in-the-loop validation, we help organisations reduce manual work while maintaining the accuracy and traceability that compliance demands."</div>
+        <p>Our platform transforms paper-based, PDF-based, and Word-based reporting into structured digital workflows that improve operational efficiency, transparency, and regulatory oversight.</p>
+        <a href="#contact" class="btn-primary" style="margin-top:28px;display:inline-flex;">Request a Demo →</a>
+      </div>
+      <div class="stats-mosaic reveal" style="transition-delay:.15s;">
+        <div class="stat-tile">
+          <div class="stat-big" data-target="99" data-suffix="%">0</div>
+          <div class="stat-label">Extraction accuracy</div>
+          <div class="stat-sub">Validated against structured document types</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-big" data-target="68" data-suffix="%">0</div>
+          <div class="stat-label">Avg. time saved per review</div>
+          <div class="stat-sub">Compared to manual processing workflows</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-icon">📄</div>
+          <div class="stat-big">Multi-format</div>
+          <div class="stat-label">Document ingestion</div>
+          <div class="stat-sub">PDF, Word, paper & scanned docs supported</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-icon">👤</div>
+          <div class="stat-big">Human-in-loop</div>
+          <div class="stat-label">Validated by design</div>
+          <div class="stat-sub">Human reviewers at every critical stage</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-icon">🏗️</div>
+          <div class="stat-big">Built for scale</div>
+          <div class="stat-label">Enterprise architecture</div>
+          <div class="stat-sub">Designed for high-volume document operations</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-icon">🔒</div>
+          <div class="stat-big">Audit-ready</div>
+          <div class="stat-label">Full traceability</div>
+          <div class="stat-sub">Every action logged & exportable</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOLUTIONS ── -->
+<section id="solutions">
+  <div class="section-inner">
+    <div class="sol-head reveal">
+      <div class="kicker">Platform Applications</div>
+      <h2 class="section-h">Six solutions. One <em>integrated</em> intelligence layer.</h2>
+      <p class="section-sub">Designed to support regulatory authorities, enterprise operations, and compliance-driven organisations through intelligent workflow transformation.</p>
+    </div>
+    <div class="sol-grid">
+
+      <div class="sol-card light reveal">
+        <div class="sol-area">Application Area · 01</div>
+        <h3 class="sol-h">Permitting &amp; Approval Workflows</h3>
+        <p class="sol-p">Digitise permit applications and approval operations through structured electronic workflows and AI-assisted review processes.</p>
+        <div class="sol-points">
+          <div class="sol-point"><div class="sol-check">✓</div>Permit application intake</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Workflow routing &amp; approvals</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Review pipelines</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Escalation management</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Audit tracking</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Electronic permit workflows</div>
+        </div>
+      </div>
+
+      <div class="sol-card dark reveal" style="transition-delay:.08s;">
+        <div class="sol-area">Application Area · 02</div>
+        <h3 class="sol-h">Compliance Management</h3>
+        <p class="sol-p">Automate compliance monitoring, obligation extraction, review workflows, and regulatory oversight operations.</p>
+        <div class="sol-points">
+          <div class="sol-point"><div class="sol-check">✓</div>Obligation extraction &amp; tracking</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Compliance workflows</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Audit traceability</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Review &amp; approval workflows</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Exception handling</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Compliance intelligence dashboards</div>
+        </div>
+      </div>
+
+      <div class="sol-card light reveal" style="transition-delay:.12s;">
+        <div class="sol-area">Application Area · 03</div>
+        <h3 class="sol-h">Reporting &amp; Submission Management</h3>
+        <p class="sol-p">Transform fragmented reporting and submission processes into centralised digital operations with full lifecycle management.</p>
+        <div class="sol-points">
+          <div class="sol-point"><div class="sol-check">✓</div>Online reporting portals</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Structured digital forms</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Submission tracking</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Reporting lifecycle management</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Workflow monitoring</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Automated validation</div>
+        </div>
+      </div>
+
+      <div class="sol-card light reveal" style="transition-delay:.16s;">
+        <div class="sol-area">Application Area · 04</div>
+        <h3 class="sol-h">AI Document Intelligence</h3>
+        <p class="sol-p">Convert paper forms, PDFs, Word files, and scanned documents into structured digital information with metadata and validation.</p>
+        <div class="sol-points">
+          <div class="sol-point"><div class="sol-check">✓</div>OCR &amp; intelligent extraction</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Classification &amp; tagging</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Structured data capture</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Multi-format ingestion</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Metadata generation</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Validation workflows</div>
+        </div>
+      </div>
+
+      <div class="sol-card dark reveal" style="transition-delay:.2s;">
+        <div class="sol-area">Application Area · 05</div>
+        <h3 class="sol-h">Cross-Document Intelligence</h3>
+        <p class="sol-p">Analyse relationships and dependencies across permits, reports, obligations, entities, and submissions with contextual intelligence.</p>
+        <div class="sol-points">
+          <div class="sol-point"><div class="sol-check">✓</div>Relationship analysis</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Entity linking</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Obligation mapping</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Compliance correlation</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Contextual intelligence</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Cross-reference analysis</div>
+        </div>
+      </div>
+
+      <div class="sol-card light reveal" style="transition-delay:.24s;">
+        <div class="sol-area">Application Area · 06</div>
+        <h3 class="sol-h">Workflow Automation</h3>
+        <p class="sol-p">Replace fragmented manual processes with intelligent enterprise workflow orchestration and configurable approval pipelines.</p>
+        <div class="sol-points">
+          <div class="sol-point"><div class="sol-check">✓</div>Approval workflows</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Task routing</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Escalation management</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Notifications &amp; alerts</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Human review pipelines</div>
+          <div class="sol-point"><div class="sol-check">✓</div>Workflow orchestration</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── APPROACH ── -->
+<section id="approach">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="kicker">Our Approach</div>
+      <h2 class="section-h">Systematic. Auditable. <em>Human-verified.</em></h2>
+      <p class="section-sub">We combine AI-powered automation with structured enterprise workflows and human oversight to deliver scalable operational transformation.</p>
+    </div>
+    <div class="approach-grid">
+      <div class="step-list">
+        <div class="step-item reveal">
+          <div class="step-num-wrap"><div class="step-bubble">1</div><div class="step-line"></div></div>
+          <div class="step-body"><h4>Capture</h4><p>Ingest paper forms, scanned documents, PDFs, Word files, and online submissions from any source or format.</p></div>
+        </div>
+        <div class="step-item reveal" style="transition-delay:.08s;">
+          <div class="step-num-wrap"><div class="step-bubble">2</div><div class="step-line"></div></div>
+          <div class="step-body"><h4>Extract</h4><p>Use AI to extract structured data, obligations, entities, and relationships — each assigned a confidence score.</p></div>
+        </div>
+        <div class="step-item reveal" style="transition-delay:.16s;">
+          <div class="step-num-wrap"><div class="step-bubble">3</div><div class="step-line"></div></div>
+          <div class="step-body"><h4>Validate</h4><p>Apply human-in-the-loop workflows for approvals and exception handling. Every decision is logged and auditable.</p></div>
+        </div>
+        <div class="step-item reveal" style="transition-delay:.24s;">
+          <div class="step-num-wrap"><div class="step-bubble">4</div><div class="step-line"></div></div>
+          <div class="step-body"><h4>Automate</h4><p>Integrate validated outputs into enterprise systems, compliance operations, and downstream reporting workflows.</p></div>
+        </div>
+        <div class="step-item reveal" style="transition-delay:.32s;">
+          <div class="step-num-wrap"><div class="step-bubble">5</div></div>
+          <div class="step-body"><h4>Analyse</h4><p>Perform cross-document intelligence, workflow tracking, and compliance correlation across all processed submissions.</p></div>
+        </div>
+      </div>
+
+      <div class="approach-card reveal" style="transition-delay:.1s;">
+        <span class="kicker">Why it works</span>
+        <div class="principle">
+          <div class="pi-head"><div class="pi-icon">👁️</div><span class="pi-title">Transparency first</span></div>
+          <p>Every AI decision is logged, explainable, and exportable for audit or regulatory review.</p>
+        </div>
+        <div class="principle">
+          <div class="pi-head"><div class="pi-icon">⚖️</div><span class="pi-title">Compliance-native</span></div>
+          <p>Built specifically for regulated industries — not a generic tool retrofitted for compliance.</p>
+        </div>
+        <div class="principle">
+          <div class="pi-head"><div class="pi-icon">🤝</div><span class="pi-title">Human authority</span></div>
+          <p>AI never makes final decisions on high-stakes items. Your team stays in control at every critical junction.</p>
+        </div>
+        <div class="principle">
+          <div class="pi-head"><div class="pi-icon">🔗</div><span class="pi-title">Integration-ready</span></div>
+          <p>REST API and webhook support for existing GRC, case management, and document platforms.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INDUSTRIES ── -->
+<section id="industries">
+  <div class="section-inner">
+    <div class="ind-head reveal">
+      <div class="kicker">Industries We Support</div>
+      <h2 class="section-h">Designed for <em>compliance-intensive</em> operations</h2>
+      <p class="section-sub">Built for document-heavy enterprise environments where accuracy, traceability, and auditability are non-negotiable.</p>
+    </div>
+    <div class="ind-grid">
+      <div class="ind-card reveal">
+        <div class="ind-icon">🏛️</div>
+        <h3 class="ind-h">Regulatory Bodies</h3>
+        <p class="ind-p">Process submissions, track obligations, and automate review workflows with full auditability and cross-document intelligence.</p>
+      </div>
+      <div class="ind-card reveal" style="transition-delay:.08s;">
+        <div class="ind-icon">🏦</div>
+        <h3 class="ind-h">Financial Services</h3>
+        <p class="ind-p">Modernise compliance reporting and operational document workflows with intelligent extraction and validation pipelines.</p>
+      </div>
+      <div class="ind-card reveal" style="transition-delay:.16s;">
+        <div class="ind-icon">🛡️</div>
+        <h3 class="ind-h">Insurance</h3>
+        <p class="ind-p">Automate claims processing and policy document management with structured data capture and approval workflows.</p>
+      </div>
+      <div class="ind-card reveal" style="transition-delay:.24s;">
+        <div class="ind-icon">🏢</div>
+        <h3 class="ind-h">Government</h3>
+        <p class="ind-p">Digitise permitting and regulatory operations with accountability, traceability, and human-in-the-loop oversight.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="contact-blob"></div>
+  <div class="contact-inner">
+    <div class="contact-head reveal">
+      <div class="kicker">Get in Touch</div>
+      <h2 class="section-h">Discuss your digital transformation</h2>
+      <p>Learn how Nexus can modernise your document and compliance operations. Book a 30-minute session tailored to your workflow — we work through your actual document types, not generic slides.</p>
+    </div>
+    <div id="form-wrap" class="form-card reveal" style="transition-delay:.15s;">
+      <div class="form-row">
+        <div><label>Name</label><input type="text" placeholder="Full name"></div>
+        <div><label>Company</label><input type="text" placeholder="Organisation"></div>
+      </div>
+      <div class="form-group"><label>Work Email</label><input type="email" placeholder="work@organisation.com"></div>
+      <div class="form-group"><label>Tell us about your workflow or compliance challenges</label><textarea rows="5" placeholder="Describe the document types, volumes, or compliance challenges you're dealing with..."></textarea></div>
+      <button class="btn-primary submit-btn" id="submit-btn">Request Consultation →</button>
+    </div>
+    <div id="success">
+      <div class="check-icon">🎉</div>
+      <h3>Request received</h3>
+      <p>We'll reach out within one business day to discuss your workflow and schedule a tailored demo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo-row">
+        <div class="footer-logo-mark">N</div>
+        <span class="footer-logo-text">Nexus</span>
+      </div>
+      <p class="footer-tagline">AI-Powered Enterprise Workflow &amp; Document Intelligence Platform</p>
+    </div>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#solutions">Solutions</a>
+      <a href="#approach">Approach</a>
+      <a href="#industries">Industries</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-legal">
+      <p>© 2025 Nexus. All rights reserved.</p>
+      <div class="legal-links">
+        <span>Privacy</span>
+        <span>Terms</span>
+        <span>Security</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll shadow
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
+});
+
+// Scroll reveal
+const revealObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+// Animated counters
+const cObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    const target=+el.dataset.target;
+    const suf=el.dataset.suffix||'';
+    let cur=0;const step=target/55;
+    const ti=setInterval(()=>{
+      cur+=step;
+      if(cur>=target){el.textContent=target+suf;clearInterval(ti);}
+      else el.textContent=Math.floor(cur)+suf;
+    },18);
+    cObs.unobserve(el);
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-target]').forEach(el=>cObs.observe(el));
+
+// Contact form
+document.getElementById('submit-btn').addEventListener('click',()=>{
+  document.getElementById('form-wrap').style.display='none';
+  document.getElementById('success').style.display='block';
+});
+</script>
+</body>
+</html>
